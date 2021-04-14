@@ -2,14 +2,13 @@ const fs = require('fs');
 const input = fs.readFileSync(0, 'utf8').trim().split('\n');
 
 let count = 0;
-function readline() {
-  return input[count++].split(' ').map(a => +a);
-}
+const readnum = () => input[count++].split(' ').map(a => +a);
+const readword = () => input[count++].split(' ');
 
-let T = readline();
+let T = readnum();
 for (let i = 1; i <= T; i++) {
-  let [N, K] = readline();
-  let arr = readline();
+  let [N, K] = readnum();
+  let arr = readnum();
   console.log(`Case #${i}: ${solve(arr, N, K)}`);
 }
 
