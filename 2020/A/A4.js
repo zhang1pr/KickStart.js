@@ -52,9 +52,9 @@ for (let i = 1; i <= T; i++) {
 
   let arr = [];
   for (let i = 1; i <= N; i++) {
-    arr.push(input[count++]);
+    arr.push(...readword());
   }
-
+  
   console.log(`Case #${i}: ${solve(arr, K)}`);
 }
 
