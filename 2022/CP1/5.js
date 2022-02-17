@@ -22,7 +22,6 @@ for (let i = 1; i <= T; i++) {
 }
 
 function solve(want, ban, N, P) {
-  let set = new Set(ban);
   let cnt = Array(P).fill(0);
   let banMap = new Map();
 
