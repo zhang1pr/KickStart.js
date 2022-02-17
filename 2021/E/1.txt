@@ -1,0 +1,9 @@
+8
+start
+aaabbcc
+abcde
+abcdeeee
+eeefffef
+eeefffgg
+aabbcc
+abcdefghijklm
