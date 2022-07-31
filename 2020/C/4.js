@@ -6,7 +6,7 @@ let count = 0;
 const readnum = () => input[count++].split(' ').map(a => +a);
 const readword = () => input[count++].split(' ');
 
-let T = readnum();
+let [T] = readnum();
 for (let i = 1; i <= T; i++) {
   let [N,Q] = readnum();
   let arr = readnum();

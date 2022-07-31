@@ -15,7 +15,7 @@ for (let i = 1; i < max; i++) lfac[i] = lfac[i-1] + Math.log(i);
 p2[1] = Math.log(2);
 for (let i = 2; i < max; i++) p2[i] = p2[i-1] + p2[1];
 
-let T = readnum();
+let [T] = readnum();
 for (let i = 1; i <= T; i++) {
   let [W,H,L,U,R,D] = readnum();
   console.log(`Case #${i}: ${solve(W,H,L,U,R,D)}`);

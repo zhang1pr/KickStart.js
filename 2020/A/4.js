@@ -46,7 +46,7 @@ class Trie {
   }
 }
 
-let T = readnum();
+let [T] = readnum();
 for (let i = 1; i <= T; i++) {
   let [N, K] = readnum();
 

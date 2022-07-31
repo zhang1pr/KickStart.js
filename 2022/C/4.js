@@ -14,7 +14,7 @@ for (let i = 0; i < max; i++) {
   }
 }
 
-let T = readnum();
+let [T] = readnum();
 for (let i = 1; i <= T; i++) {
   let [N] = readnum();
   let [S] = readword();

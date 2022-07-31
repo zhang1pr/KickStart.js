@@ -7,7 +7,7 @@ const readword = () => input[count++].split(' ');
 
 let map = new Map();
 
-let T = readnum();
+let [T] = readnum();
 for (let i = 1; i <= T; i++) {
   let [A, B] = readnum();
 
