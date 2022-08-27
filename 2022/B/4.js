@@ -19,7 +19,7 @@ for (let i = 1; i <= T; i++) {
 
 function solve(n, m, g) {
 	let ans = [];
-  let dStr = "NESW";
+  let dStr = 'NESW';
 	let dir = [[-1, 0], [0, 1], [1, 0], [0, -1]];
 
 	function canGo(i, j) {
