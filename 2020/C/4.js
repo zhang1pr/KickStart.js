@@ -3,8 +3,8 @@ const input = fs.readFileSync(0, 'utf8').trim().split(/[\n\r]+/);;
 class BIT{constructor(r){this.size=r,this.array=Array(this.size+1).fill(0)}add(r,t){for(let s=r;s<=this.size;s+=s&-s)this.array[s]+=t;return this}query(r){let t=0;for(let s=r;s>0;s-=s&-s)t+=this.array[s];return t}queryRange(r,t){return 1==r?this.query(t):this.query(t)-this.query(r-1)}}
 
 let count = 0;
-const readnum = () => input[count++].split(' ').map(a => +a);
-const readword = () => input[count++].split(' ');
+const readnum = () => input[count++].trim().split(' ').map(a => +a);
+const readword = () => input[count++].trim().split(' ');
 
 let [T] = readnum();
 for (let i = 1; i <= T; i++) {

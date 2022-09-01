@@ -2,8 +2,8 @@ const fs = require('fs');
 const input = fs.readFileSync(0, 'utf8').trim().split(/[\n\r]+/);;
 
 let count = 0;
-const readnum = () => input[count++].split(' ').map(a => +a);
-const readword = () => input[count++].split(' ');
+const readnum = () => input[count++].trim().split(' ').map(a => +a);
+const readword = () => input[count++].trim().split(' ');
 
 let max = 1000, M = 1e9+7;
 let C = [...Array(max)].map(()=>Array(max).fill(0));

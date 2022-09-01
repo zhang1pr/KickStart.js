@@ -2,8 +2,8 @@ const fs = require('fs');
 const input = fs.readFileSync(0, 'utf8').trim().split(/[\n\r]+/);;
 
 let count = 0;
-const readnum = () => input[count++].split(' ').map(a => +a);
-const readword = () => input[count++].split(' ');
+const readnum = () => input[count++].trim().split(' ').map(a => +a);
+const readword = () => input[count++].trim().split(' ');
 
 class TrieNode {
   constructor() {
