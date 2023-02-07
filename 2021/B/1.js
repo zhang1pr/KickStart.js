@@ -9,14 +9,14 @@ let [T] = readnum();
 for (let i = 1; i <= T; i++) {
   let [N] = readnum();
   let [arr] = readword();
-  console.log(`Case #${i}: ${solve(arr)}`);
+  console.log(`Case #${i}: ${solve(N, arr)}`);
 }
 
-function solve(arr) {
+function solve(N, arr) {
   let res = [1];
 
   let cnt = 1;
-  for (let i=1;i<arr.length;i++) {
+  for (let i=1;i<N;i++) {
     if (arr[i] > arr[i-1]) {
       cnt++;
     } else {
