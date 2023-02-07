@@ -28,13 +28,13 @@ function solve(N, arr) {
     for (let j=0;j<N;j++) {
       if (arr[i][j] == 'B') {
         if (j == 0 && !set.has(i+','+j)) {
-          let cur = dfs('B', set, i, j, bdir, N, arr);
+          let cur = DFS('B', set, i, j, bdir, N, arr);
           bpath += cur;
         }
         blue++;
       } else if (arr[i][j] == 'R') {
         if (i == 0 && !set.has(i+','+j)) {
-          let cur = dfs('R', set, i, j, rdir, N, arr);
+          let cur = DFS('R', set, i, j, rdir, N, arr);
           rpath += cur;
         }
 
@@ -65,7 +65,7 @@ function* nei(ch, r, c, dir, N, arr) {
   }
 }
 
-function dfs(ch, set, i, j, dir, N, arr) {
+function DFS(ch, set, i, j, dir, N, arr) {
   let stack = [[i, j]];
 
   while (stack.length) {
