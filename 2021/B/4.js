@@ -1,7 +1,7 @@
 const fs = require('fs');
 const input = fs.readFileSync(0, 'utf8').trim().split(/[\n\r]+/);
 const gcd = (x, y) => y == 0 ? x : gcd(y, x % y);
-class SegmentTree{constructor(e,t,r){this.array=e,this.operation=t,this.defaultVal=r||0,this.tree=this.createTree(this.array),this.buildTree(0,this.array.length-1,0)}isPowerOfTwo(e){return!(e<1)&&(e&e-1)==0}createTree(e){let t,r=e.length;return Array(t=this.isPowerOfTwo(r)?2*r-1:2*2**(Math.floor(Math.log2(r))+1)-1)}buildTree(e,t,r){if(e==t){this.tree[r]=this.array[e];return}let i=Math.floor((e+t)/2);this.buildTree(e,i,2*r+1),this.buildTree(i+1,t,2*r+2),this.tree[r]=this.operation(this.tree[2*r+1],this.tree[2*r+2])}update(e,t){this.updateRange(0,0,this.array.length-1,e,t)}updateRange(e,t,r,i,s){if(t==r)this.tree[e]=s;else{let h=Math.floor((t+r)/2);i<=h?this.updateRange(2*e+1,t,h,i,s):this.updateRange(2*e+2,h+1,r,i,s),this.tree[e]=this.operation(this.tree[2*e+1],this.tree[2*e+2])}}query(e,t){return this.queryRange(e,t,0,this.array.length-1,0)}queryRange(e,t,r,i,s){if(e<=r&&t>=i)return this.tree[s];if(e>i||t<r)return this.defaultVal;let h=Math.floor((r+i)/2),a=this.queryRange(e,t,r,h,2*s+1),n=this.queryRange(e,t,h+1,i,2*s+2);return 0==a?n:0==n?a:this.operation(a,n)}}
+class SegmentTree{constructor(e,t,r){this.array=e,this.operation=t,this.defaultVal=r||0,this.tree=this.createTree(this.array),this.buildTree(0,this.array.length-1,0)}isPowerOfTwo(e){return!(e<1)&&(e&e-1)==0}createTree(e){let t,r=e.length;return Array(t=this.isPowerOfTwo(r)?2*r-1:2*2**(Math.floor(Math.log2(r))+1)-1)}buildTree(e,t,r){if(e==t){this.tree[r]=this.array[e];return}let i=Math.floor((e+t)/2);this.buildTree(e,i,2*r+1),this.buildTree(i+1,t,2*r+2),this.tree[r]=this.operation(this.tree[2*r+1],this.tree[2*r+2])}update(e,t){this.updateTreeRange(0,0,this.array.length-1,e,t)}updateTreeRange(e,t,r,i,s){if(t==r)this.tree[e]=s;else{let a=Math.floor((t+r)/2);i<=a?this.updateTreeRange(2*e+1,t,a,i,s):this.updateTreeRange(2*e+2,a+1,r,i,s),this.tree[e]=this.operation(this.tree[2*e+1],this.tree[2*e+2])}}query(e){return this.queryRange(0,e)}queryRange(e,t){return this.queryTreeRange(e,t,0,this.array.length-1,0)}queryTreeRange(e,t,r,i,s){if(e<=r&&t>=i)return this.tree[s];if(e>i||t<r)return this.defaultVal;let a=Math.floor((r+i)/2),h=this.queryTreeRange(e,t,r,a,2*s+1),n=this.queryTreeRange(e,t,a+1,i,2*s+2);return 0==h?n:0==n?h:this.operation(h,n)}}
 
 let count = 0;
 const readnum = () => input[count++].trim().split(' ').map(a => +a);
@@ -24,103 +24,49 @@ for (let i = 1; i <= T; i++) {
 }
 
 function solve(N,Q,edges,qs) {
-  let tree = new SegmentTree(Array(N).fill(0n), gcd, 0n);
   let graph = [...Array(N+1)].map(()=>[]);
-  let size = Array(N+1).fill(1);
-  let par = Array(N+1).fill(0);
-  let start = Array(N+1).fill(0);
-  let end = Array(N+1).fill(0);
-  let next = Array(N+1).fill(0);
-  next[1] = 1;
-  let time = 0;
   let ans = Array(Q).fill(0n);
   qs = qs.map((arr,idx)=>[...arr,idx]);
-  qs.sort((a,b) => a[1] - b[1]);
-  edges.sort((a,b) => a[2] - b[2]);
+  let qmap = new Map();
 
-  function getSize() {
-    let stack = [[1, 0, 0]];
-
-    while (stack.length) {
-      let [cur,j,idx] = stack[stack.length-1];
-
-      if (idx == graph[cur].length) {
-        stack.pop();
+  for (let [city, weight, idx] of qs) {
+    if (!qmap.has(city))
+      qmap.set(city, []);
     
-        if (stack.length) {
-          let parent = stack[stack.length-1][0];
-          size[parent] += size[cur];
-
-          if (size[cur] > size[graph[parent][0][0]]) {
-            [graph[parent][j], graph[parent][0]] = [graph[parent][0], graph[parent][j]];
-          }
-        }
-      } else {
-        for (let j=idx; j<graph[cur].length;j++) {
-          let [i] = graph[cur][j];
-          stack[stack.length-1][2] = j+1;
-
-          if (i != par[cur]) {
-            par[i] = cur;
-            stack.push([i, j, 0]);
-            break;
-          }
-        }
-      } 
-    }
-  }
-  
-  function DFS() {
-    let stack = [[1, 0]];
-
-    while (stack.length) {
-      let [cur,idx] = stack[stack.length-1];
-
-      if (idx == graph[cur].length) {
-        end[cur] = time;
-        stack.pop();
-      } else {
-        if (start[cur] == 0) {
-          time++;
-          start[cur] = time;
-        }
-
-        for (let j=idx; j<graph[cur].length;j++) {
-          stack[stack.length-1][1] = j+1;
-          let go = graph[cur][j];
-          let [child] = go;
-          if (child != par[cur]) {
-            next[child] = (go == graph[cur][0] ? next[cur] : child);
-            stack.push([child, 0]);
-            break;
-          }
-        }
-      }
-    }
+    qmap.get(city).push([weight, idx]);  
   }
 
+  let maxLimit = 0;
   for (let [c1,c2,limit,cost] of edges) {
+    maxLimit = Math.max(maxLimit, limit);
     graph[c1].push([c2,limit,cost]); 
     graph[c2].push([c1,limit,cost]);
   }
+  
+  let tree = new SegmentTree(Array(maxLimit+1).fill(0n), gcd, 0n);
+  let stack = [[1,-1,0,0]];
 
-  getSize();
-  DFS();
+  while (stack.length) {
+    let [city, parent, limit, index] = stack[stack.length-1];
 
-  let edgeIdx = 0;
-  for (let [from, weight, id] of qs) {
-    while (edgeIdx < edges.length && edges[edgeIdx][2] <= weight) {
-      let [c1,c2,limit,cost] = edges[edgeIdx];
-      if (par[c1] == c2) [c1,c2] = [c2,c1];
+    if (index == graph[city].length) {
+      tree.update(limit, 0n);
+      stack.pop();
+    } else {
+      if (index == 0 && qmap.has(city))
+        for (let [weight, idx] of qmap.get(city))
+          ans[idx] = tree.queryRange(1, Math.min(maxLimit, weight));
 
-      tree.update(start[c2]-1, cost);
-      edgeIdx++;
-    }
+      for (let i=index; i<graph[city].length; i++) {
+        stack[stack.length-1][3] = i+1;
+        let [nei, nlimit, cost] = graph[city][i];
 
-    while (from) {
-      let to = next[from];
-      ans[id] = gcd(ans[id], tree.query(start[to]-1, start[from]-1));
-      from = par[to];
+        if (nei != parent) {
+          tree.update(nlimit, cost);
+          stack.push([nei, city, nlimit, 0]);
+          break;
+        }
+      }    
     }
   }
 
